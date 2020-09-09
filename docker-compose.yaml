@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+# REST API running on Node JS container
+ app:
+   container_name: lafs-web
+   restart: always
+   build: .
+   ports:
+     - '4200:4200'
+   # link this container to the Mongo DB container
+   command: >
+    bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
+   # pass in environment variables for database host and name 
+   environment:
+     - DB_HOST=mongo
+     - DB_NAME=lafs-db
+
+# Attach the external network to these containers
+networks:
+ default:
+  external:
+   name: lafs-net
